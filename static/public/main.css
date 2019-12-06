@@ -1,0 +1,57 @@
+@import "vars.css";
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{}
+}
+
+
+.btn,.nzx-btn{
+  position:relative;
+  outline:none;
+  border-radius:var(--radius-btn);
+  padding:10px;
+  overflow:hidden;
+  transition:all .2s ease;
+  border:none;
+  font-size:var(--btn-size-font);
+}
+.btn:focus,.nzx-btn:focus{
+  outline:none;
+  border:none;
+}
+.btn:hover,.nzx-btn:hover{
+  cursor: pointer;
+}
+
+
+.nzx-btn{
+  color:var(--btn-color-font);
+  background:var(--btn-color-bg);
+}
+.nzx-btn:hover{
+  background:var(--btn-color-bg-hover);
+}
+
+
+
+.up-prop{
+  top:0;
+  position:fixed;
+
+}
+
+.nzx-propCard{
+  z-index:var(--index-prop-bg);
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+}
+.nzx-propCard>._content{
+  background:var(--color-bg);
+  padding:30px;
+  box-shadow:var(--shadow-prop)
+}

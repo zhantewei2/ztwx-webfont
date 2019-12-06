@@ -1,0 +1,17 @@
+{
+  "name": "@ztwx/webfont",
+  "version": "0.0.1-alpha",
+  "description": "webfont",
+  "main": "config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ztwx/ztw-server": "^0.0.4",
+    "open": "^7.0.0",
+    "webfont": "^9.0.0",
+    "winston": "^3.2.1"
+  }
+}

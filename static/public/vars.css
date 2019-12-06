@@ -1,0 +1,12 @@
+:root{
+  --color-primary:skyblue;
+  --color-font:rgba(0,0,0,0.75);
+  --color-bg:white;
+  --radius-btn:10px;
+  --btn-color-bg:var(--color-primary);
+  --btn-color-font:var(--color-bg);
+  --btn-color-bg-hover: blue;
+  --btn-font-size:16px;
+  --index-prop-bg:10;
+  --shadow-prop: 0 2px 12px -3px rgba(0,0,0,0.8);
+}

@@ -118,7 +118,7 @@ class UploadPlate extends HTMLElement{
       })
       console.log(result)
       if(result.status!=200){
-        // this.messageService.show("error","服务器未知错误")
+        this.messageService.show("error","服务器未知错误")
         
       }else{
         const content=result.content;
@@ -128,9 +128,16 @@ class UploadPlate extends HTMLElement{
           this.alert.show("warn","图标名重复，请更改名称");
           this.editFilename=true;
         }else if(content==2){
-          this.log.debug("上传的文件不符合规范");
+          this.log.debug("the uploaded file dose not conform to the specification");
+          this.alert.show("error","上传的图标文件不符合规范")
+        }else if(content==3){
+          this.log.debug("icon list compiler fails")
+          this.alert.show("error","字体生成失败，请查看server日志")
         }else if(content==202){
-          
+          this.messageService.show("success","字体构建成功，即将重新载入字体")
+          setTimeout(()=>{
+            this.commonService.reloadPage();
+          },500);
         }
       }
     })
@@ -146,7 +153,7 @@ class UploadPlate extends HTMLElement{
       }
     }catch (e) {
       this.log.debug("missing image extend type");
-      this.alert.show("error","图片必须为svg格式")
+      this.alert.show("error","图片必须为svg格式");
       return false;
     }
     return true;
@@ -213,6 +220,10 @@ class UploadPlate extends HTMLElement{
     ioc.autoWired("messageService",this);
     ioc.autoWired("log",this);
     ioc.autoWired("anDisplay",this);
+    ioc.autoWired("commonService",this);
+    setTimeout(()=>{
+      this.commonService.reloadPage();
+    },1000);
     this.style.position="relative";
     this.style.display="block";
     this.alert=this.querySelector("ztwx-alert");

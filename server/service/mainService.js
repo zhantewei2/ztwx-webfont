@@ -45,7 +45,8 @@ const buildIconList=async()=>{
     configuration.outputDir,
     configuration.formats,
     configuration.fontName,
-    configuration.className
+    configuration.className,
+    configuration.currentFontName
   )
 }
 

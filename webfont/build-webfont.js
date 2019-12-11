@@ -24,7 +24,15 @@ const writeCss=async(outputName,templateBytes)=>{
 }
 const current_resources=root_join("static/public");
 
-const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,writeCurrent=true)=>{
+const cssTpDisFontCache=(cssTemplate)=>{
+  const timestamp=new Date().getTime().toString();
+  return cssTemplate.replace(/url\(["'](.+?)["']\)/g,(match,group1)=>{
+    log.debug("match ："+match+". group1 :"+group1);
+    return `url("${group1}?name=${timestamp}")`;
+  });
+}
+
+const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,nativeFontName,writeCurrent=true)=>{
   try{
     log.debug(`build imgDir: ${imgDir}`);
     log.debug(`build outDir: ${outDir}`);
@@ -36,8 +44,10 @@ const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,writeC
     template:"css",
     templateClassName:templateClassName
     });
+    let cssTp=result.template;
+    cssTp=cssTpDisFontCache(cssTp);
     //write css
-    await writeCss(path.join(outDir,fontName+".css"),result.template)
+    await writeCss(path.join(outDir,fontName+".css"),cssTp);
     //write font
 
     for (let format of formats){
@@ -45,9 +55,9 @@ const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,writeC
     }
 
     if(writeCurrent){
-      await writeCss(path.join(current_resources,fontName+".css"),result.template);
+      await writeCss(path.join(current_resources,nativeFontName+".css"),cssTp);
       for(let format of formats){
-        await writeFont(path.join(current_resources,fontName+"."+format),result[format]);
+        await writeFont(path.join(current_resources,nativeFontName+"."+format),result[format]);
       }
     }
     log.info("build webfont successful")

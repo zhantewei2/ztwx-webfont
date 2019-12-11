@@ -54,6 +54,15 @@ router.post("upload-icon",async(ctx)=>{
     }catch (e) {
         return ctx.body="2"
     }
+    //移动图片至公共文件
+    await tryBuildFileService.copyTmpIcon(filename);
+    try{
+      await buildIconList();
+    }catch(e){
+      log.error("build icon list failure!")
+      log.error(e);
+      return ctx.body="3";
+    }
     ctx.body="202";
 });
 

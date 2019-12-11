@@ -13,6 +13,9 @@ class Configuration{
   get fontName(){
     return "nzx";
   }
+  get currentFontName(){
+    return "nzx";
+  }
   constructor(){
     this.formats=["woff","woff2"];
     this.className="na";

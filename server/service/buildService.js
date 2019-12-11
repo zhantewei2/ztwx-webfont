@@ -73,6 +73,13 @@ class TryBuildFileService{
         this.attemptBuild=async()=>{
             await attamptFont(configuration.tmpDir);
         }
+        this.copyTmpIcon=async(filename)=>{
+            await run_promise(
+                fs.copyFile,
+                path.join(configuration.tmpDir,filename),
+                path.join(configuration.imgDir,filename)
+            )
+        }
     }
 }
 

@@ -4,9 +4,13 @@ const {
   buildIconList
 } =require("../service/mainService");
 
+const {tryBuildFileService}=require("../service/buildService");
+
 const {LoggerFactory} =require("../../logger");
 
 const log=LoggerFactory.getLogger(__filename);
+const urllib=require("url");
+const querystring=require("querystring");
 
 const router=new Router();
 
@@ -33,8 +37,24 @@ router.post("icons",async(ctx)=>{
 });
 
 router.post("upload-icon",async(ctx)=>{
-  log.debug("upload icon");
-  console.log(ctx.req.url);
-})
+    const params=querystring.parse(urllib.parse(ctx.req.url).query);
+    const filename=params["filename"];
+    const filedir=params["filedir"];
+    log.debug("upload icon :"+filename);
+    if(!filename)return ctx.body="0";
+    const iconExists=await tryBuildFileService.findIconExists(filename);
+    if(iconExists)return ctx.body="1";
+    //检查文件夹
+    await tryBuildFileService.checkDir();
+    //存放临时图标
+    await tryBuildFileService.buildTmpIcon(ctx.req,filename);
+    //尝试构建
+    try {
+        await tryBuildFileService.attemptBuild();
+    }catch (e) {
+        return ctx.body="2"
+    }
+    ctx.body="202";
+});
 
 module.exports=router.routes();

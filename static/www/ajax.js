@@ -44,6 +44,25 @@ class Ajax{
       xhr.send(sendQuery);
     }))
   }
+
+  up(address,params,buffer){
+    const xhr=new XMLHttpRequest();
+    return new Promise((resolve,reject)=>{
+      xhr.onreadystatechange=()=>{
+        if(xhr.readyState==4){
+          if(xhr.status==0)require("lose");
+          resolve({
+            status:xhr.status,
+            content:xhr.responseText
+          })
+        }
+      }
+      xhr.onreadystatechange("Content-Type","application/octet-stream");
+      xhr.open("post",address+"?"+queryStringify(params));
+      xhr.send(buffer)
+    })
+
+  }
 }
 
 export const ajax=new Ajax;

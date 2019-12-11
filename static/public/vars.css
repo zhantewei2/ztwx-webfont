@@ -1,11 +1,36 @@
 :root{
-  --color-primary:skyblue;
+  --color-primary:#04A4F9;
+  --color-primary-light:#03B2FC;
+  --color-secondary:red;
+  --color-type-info:#128AB2;
+  --color-type-info-font:#5AADC9;
+  --color-type-warn:#FFD166;
+  --color-type-warn-font:#B19857;
+  --color-type-error:#EF476F;
+  --color-type-error-font:#923B58;
+  --color-type-success:#06D6A0;
+  --color-type-success-font:#119278;
   --color-font:rgba(0,0,0,0.75);
+  --color-font-title:rgb(120,160,180);
+  --color-font-des:rgba(120,160,180, 0.7);
   --color-bg:white;
+  --color-lightbg: rgb(249,249,249);
+  --color-lightbg-deep: rgb(240,240,240);
+  --color-softfont:rgba(0,0,0,0.7);
+  --color-softbg:rgb(235,235,235);
+  --color-softborder:rgb(220,220,220);
+  --color-primarylinear: linear-gradient(45deg,var(--color-primary),var(--color-primary-light));
+  --color-primary-disabled: #99dbfc;
+  --color-softlinear: linear-gradient(45deg,var(--color-softbg),var(--color-lightbg));
+
+  --color-list-border:rgb(230,230,230);
+  --color-list-content:var(--color-font-des);
+  --color-list-title:var(--color-font-title);
   --radius-btn:10px;
+  --radius-card:15px;
   --btn-color-bg:var(--color-primary);
   --btn-color-font:var(--color-bg);
-  --btn-color-bg-hover: blue;
+  --btn-color-bg-hover: #2F8FF9;
   --btn-font-size:16px;
   --index-prop-bg:10;
   --shadow-prop: 0 2px 12px -3px rgba(0,0,0,0.8);

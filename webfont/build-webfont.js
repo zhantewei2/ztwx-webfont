@@ -62,19 +62,21 @@ const attemptFont=async(filePath)=>{
     const result= await webfont({
       files:filePath
     })
+    log.debug("attempt font successful")
   }catch(e){
     throw "compiler svg failure"
   }
-}
+};
 
 const hostPath=path.dirname(__dirname);
-
-const imgDir=path.resolve(hostPath,"dist/imgs");
-const outDir=path.resolve(hostPath,"dist/output");
+//
+// const imgDir=path.resolve(hostPath,"dist/imgs");
+// const outDir=path.resolve(hostPath,"dist/output");
 
 // buildWebfont(imgDir,outDir,["woff","woff2"],"hello","fa")
 
 exports.buildWebfont=buildWebfont;
+exports.attamptFont=attemptFont;
 // const run=async()=>{
 //   try{
 //    await attemptFont(path.join(imgDir,"1.svg"))

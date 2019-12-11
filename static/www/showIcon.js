@@ -1,9 +1,38 @@
-import {modal} from '/www/modal.js';
+
+import "/www/ioc.service.js";
+import "/www/store/global.store.js";
+
+
+// 注入 全局ioc容器组件
+const messageService=document.querySelector("body>ztwx-message");
+ioc.bean("messageService",()=>messageService);
+
+
 import {ajax} from "/www/ajax.js";
+import {LoadCss,NzxAnimation} from "/www/utils.js";
+import "/www/components/components.js";
+import "/www/loading.js";
+
+window.NzxAnimation=NzxAnimation;
+window.nzxAjax=ajax;
+const loadCss=new LoadCss();
+loadCss.load("/public/module.scss");
+
+window.nzxCssModule=loadCss;
+
+
+import {modal} from '/www/modal.js';
 import '/www/input.js';
 import "/www/upload.js"
 
-// listContent=listContent.map(i=>i.slice(0,i.lastIndexOf('.')));
+//从module构建全局style
+const insertDom=document.createElement("aside");
+document.body.appendChild(insertDom);
+loadCss.loadModule("moduleBtn",insertDom);
+loadCss.loadModule("moduleList",insertDom);
+
+
+
 
 class ShowIcon extends HTMLElement{
   constructor(props) {
@@ -21,7 +50,6 @@ class ShowIcon extends HTMLElement{
 
     const baseContent=``;
     this.shadow.innerHTML=`
-    <link href="/css/nzxFont_v1.css" rel="stylesheet" type="text/css"/>
     <style>
       main{
         display:flex;
@@ -72,7 +100,7 @@ class ShowIcon extends HTMLElement{
     </style>
     <div class="input-top fixer-top">
       <nzx-input placeholder="search icon"></nzx-input>
-      <nzx-upload></upload>
+      <nzx-upload></nzx-upload>
     </div>
     <div class="input-top">
     </div>
@@ -113,6 +141,12 @@ class ShowIcon extends HTMLElement{
 
     }).catch(e=>{
       console.error(e)
+    })
+
+    this.globalOrder=window.globalStore.subscribe(payParam=>{
+      if(payParam.type=="reload font"){
+        
+      }
     })
 
     // let prevalue;

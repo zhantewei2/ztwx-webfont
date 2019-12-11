@@ -7,7 +7,6 @@ const {LoggerFactory}=require("../logger");
 const mainController=require("./controller/mainController");
 const log=LoggerFactory.getLogger(__filename);
 
-
 switchPort(3000,20,(port)=>{
 
   const app=new Server();

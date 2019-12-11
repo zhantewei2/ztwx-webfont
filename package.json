@@ -4,7 +4,7 @@
   "description": "webfont",
   "main": "config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node server/app.js"
   },
   "author": "",
   "license": "ISC",

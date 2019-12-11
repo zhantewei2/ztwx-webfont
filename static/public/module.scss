@@ -1,0 +1,102 @@
+/* module btn */
+.moduleBtn{
+    .btn,.nzx-btn{
+        position:relative;
+        outline:none;
+        border-radius:var(--radius-btn);
+        padding:10px;
+        overflow:hidden;
+        transition:all .2s ease;
+        border:none;
+        font-size:var(--btn-size-font);
+        box-sizing: border-box;
+      }
+    .btn:focus,.nzx-btn:focus{
+      outline:none;
+      border:none;
+    }
+    .btn:hover,.nzx-btn:hover{
+      cursor: pointer;
+    }
+    
+    .nzx-btn{
+      color:var(--btn-color-font);
+      background:var(--btn-color-bg);
+    }
+    .nzx-btn:hover{
+      background:var(--btn-color-bg-hover);
+    }
+    .nzx-btn-outline{
+      border:1px solid var(--color-softborder) !important;
+      color:var(--color-softfont);
+      background:transparent;
+      box-shadow:1px 1px 6px -3px rgba(0,0,0,0.2);
+      transition:all .2s ease;
+    }
+    .nzx-btn-outline:hover{
+      box-shadow:1px 3px 12px -5px rgba(0,0,0,0.3);
+    }
+    .btn-lg{
+      padding:15px 20px;
+    }
+    .btn-round{
+      display:inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn-round,.btn-round-lg{
+      border-radius:50%;
+    }
+    .btn-round.btn-small{
+      width:35px;
+      height:35px;
+    }
+    .btn-round.btn-samll i{
+      font-size:20px;
+    }
+    .btn-round-lg{
+      width:50px;    
+      height:50px;
+      background:var(--color-primary);
+      color:var(--color-bg);
+      font-size:22px;
+      transition:all .3s ease;
+    }
+    .btn-round-lg[disabled]{
+      cursor:not-allowed;
+      background:var(--color-primary-disabled) !important;
+    }
+}
+
+/* module card */
+.moduleCard{
+    .card{
+        background:blue;
+    }
+}
+
+/* module list */
+
+.moduleList{
+  .list-group .list-item{
+    padding:10px 20px;
+    display:flex;
+    border-radius:var(--radius-card);
+    background:var(--color-lightbg);
+    align-items:center;
+  }
+  .list-group .list-item label{
+    color:var(--color-list-title);
+  }
+  .list-group .list-item aside{
+    padding-left:20px;
+    color:var(--color-list-content);
+    flex:1;
+    display:inline-flex;
+    align-items: center;
+  }
+}
+
+.moduleAlert{
+
+}

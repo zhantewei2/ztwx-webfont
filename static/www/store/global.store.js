@@ -1,8 +1,17 @@
 class Subject{
+  /**
+   * 
+   * state{
+   *   preFilename:string;
+   * }
+   * 
+   */
   constructor(){
     this.index=0;
     this.orderer=[];
+    this.state={
 
+    }
   }
   /** 
   * @param PayParam{
@@ -17,6 +26,24 @@ class Subject{
       order.run(params);
     }
   }
+  /**
+   * @param run (state:State)=>State
+   * 
+   */
+  commit(type,run){
+    const state=run(this.state);
+    Object.assign(this.state,state);
+    
+    this.next({
+      type
+    })
+  
+  }
+
+  select(filter){
+    return filter?filter(this.state):this.state;
+  }
+
   /** 
   * @param runcallBack (p:PayParam)=>void
   * @Auth zhantewei

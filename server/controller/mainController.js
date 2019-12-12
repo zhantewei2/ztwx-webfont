@@ -1,7 +1,8 @@
 const {Router} =require('@ztwx/ztw-server');
 const {
   getIconList,
-  buildIconList
+  buildIconList,
+  getBaseConfiguration
 } =require("../service/mainService");
 
 const {tryBuildFileService}=require("../service/buildService");
@@ -65,5 +66,13 @@ router.post("upload-icon",async(ctx)=>{
     }
     ctx.body="202";
 });
+
+/**
+ * 获取 webfont 的配置信息
+ * 如 class名 na 或 fa
+ */
+router.get("base-config",async(ctx)=>{
+  ctx.body=await getBaseConfiguration();
+})
 
 module.exports=router.routes();

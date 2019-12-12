@@ -57,10 +57,19 @@ class PropCard extends HTMLElement{
     const wrapper=this.shadow.querySelector(".nzx-propCard");
     const wrapperAnimation=new NzxAnimation(wrapper,"prop_transition");
     let is_uploading;
+    /**
+     * Store 订阅
+     * 
+     */
     this.uploadOrder=window.globalStore.subscribe(({type,payload})=>{
-      this.log.debug(type,payload);
       if(type=="upload action"){
         is_uploading=payload;
+      }
+      /**
+       * 重载字体时，关闭propCard
+       */
+      if(type=="font reloading"){
+        if(payload)this.closeProp();
       }
     })
 
@@ -69,10 +78,10 @@ class PropCard extends HTMLElement{
     })
     wrapper.addEventListener("click",e=>{
       if(e.selfStop)return;
-      closeProp();
+      this.closeProp();
     })
     
-    const closeProp=()=>{
+    this.closeProp=()=>{
       if(is_uploading)return;
       wrapperAnimation.leave("prop_leave",this);  
     }
@@ -116,7 +125,6 @@ class UploadPlate extends HTMLElement{
         type:"upload action",
         payload:false
       })
-      console.log(result)
       if(result.status!=200){
         this.messageService.show("error","服务器未知错误")
         
@@ -134,10 +142,14 @@ class UploadPlate extends HTMLElement{
           this.log.debug("icon list compiler fails")
           this.alert.show("error","字体生成失败，请查看server日志")
         }else if(content==202){
-          this.messageService.show("success","字体构建成功，即将重新载入字体")
+          this.log.debug("font build success. reload font~");
+          window.globalStore.commit("save filename",state=>({
+            preFilename:filename.slice(0,filename.lastIndexOf("."))
+          }));
+          // this.messageService.show("success","字体构建成功，即将重新载入字体")
           setTimeout(()=>{
             this.commonService.reloadPage();
-          },500);
+          },100);
         }
       }
     })
@@ -221,9 +233,6 @@ class UploadPlate extends HTMLElement{
     ioc.autoWired("log",this);
     ioc.autoWired("anDisplay",this);
     ioc.autoWired("commonService",this);
-    setTimeout(()=>{
-      this.commonService.reloadPage();
-    },1000);
     this.style.position="relative";
     this.style.display="block";
     this.alert=this.querySelector("ztwx-alert");
@@ -355,15 +364,15 @@ class UploadPlate extends HTMLElement{
 class nzxUpload extends HTMLElement{
   constructor(){
     super();
+    ioc.autoWired("loadCss",this);
     this.shadow=this.attachShadow({mode:"open"});
     this.shadow.innerHTML=`
     <button class="nzx-btn">upload</button>
    `;
-    window.nzxCssModule.loadModule("moduleBtn",this.shadow)
+    this.loadCss.loadModule("moduleBtn",this.shadow);
   }
   connectedCallback(){
     const uploadBtn=this.shadow.querySelector(".nzx-btn");
-
 
     uploadBtn.addEventListener("click",()=>{
       const prop=document.createElement("nzx-propcard");
@@ -373,11 +382,6 @@ class nzxUpload extends HTMLElement{
       document.body.appendChild(prop);
 
     });
-    const prop=document.createElement("nzx-propcard");
-    prop.innerHTML=`
-      <nzx-uploadplate slot="content"></nzx-uploadplate>
-    `
-    document.body.appendChild(prop);
 
   }
 

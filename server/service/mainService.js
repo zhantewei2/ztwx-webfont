@@ -51,6 +51,20 @@ const buildIconList=async()=>{
 }
 
 /**
+ * 
+ * @des get base configuration
+ * @return 
+ *    fontPrefix 样式前缀名
+ */
+const getBaseConfiguration=async=()=>{
+  return {
+    fontPrefix:configuration.className,
+  }
+}
+
+
+
+/**
  * upload icon
  * 
  * 
@@ -76,3 +90,4 @@ const iconExists=async(iconName)=>{
 
 exports.buildIconList=buildIconList;
 exports.getIconList=getIconList;
+exports.getBaseConfiguration=getBaseConfiguration;

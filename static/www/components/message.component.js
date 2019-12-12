@@ -4,26 +4,34 @@ export class MessageComponent extends HTMLElement{
 <style>
   .message{
     position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    top:80px;
+    right:10px;;
     border-radius:var(--radius-card);
     padding:25px 50px 25px 20px;
     z-index:200;
-    box-shadow:1px 2px 10px -2px rgba(0,0,0,0.2);
+    background: var(--color-bg);
     display:none;
+    min-width:180px;
+    max-width:250px;
     animation:messageEnter .2s ease-in;
+    font-family:var(--font-base);
+    align-items:center;
+  }
+  .message-icon{
+    width:35px;
+    height:35px;
+    margin-right:1rem;
   }
   .transition{
     transition:all .3s ease;
   }
   .message-article-an-show-start{
-    transform:translate3d(-50%,-100%,0) scale(.8,.8);
+    transform:translate3d(100%,0%,0) ;
     opacity:0;
   }
   .message-article-an-hide-end{
     opacity:0;
-    transform:translate3d(-50%,-100%,0) scale(.8,.8);
+    transform:translate3d(100%,0%,0);
   }
   .close{
     position:absolute;
@@ -37,12 +45,16 @@ export class MessageComponent extends HTMLElement{
   }
   ${this.mixin_colors((key,value,fontValue)=>`
     .message-${key}{
-      background:${value};
-      color:${fontValue};
+      background:linear-gradient(45deg,${value},${fontValue});
+      box-shadow:1px 8px 23px -10px ${this.convert_color.opacity(value,0.8)}, 1px 3px 8px -2px ${this.convert_color.opacity(fontValue,.2)};
+      color:white;
     }
   `)}
 </style>
 <article class="message">
+ 
+    <img class="message-icon">
+
     <main class="content">
       content
     </main>
@@ -57,15 +69,44 @@ export class MessageComponent extends HTMLElement{
     super(props);
     window.ioc.autoWired("mixin_colors",this);
     window.ioc.autoWired("anDisplay",this);
+    window.ioc.autoWired("convert_color",this);
+    this.iconBaseUrl="/public/images/";
+    this.icons={
+      "warn":"message-warn.svg",
+      "info":"message-info.svg",
+      "error":"message-error.svg",
+      "success":"message-success.svg"
+    }
+
+
     this.shadow=this.attachShadow({mode:"open"});
     this.shadow.innerHTML=this.render();
     this.article=this.shadow.querySelector(".message");
     this.contentEl=this.shadow.querySelector(".content");
     this.closeEl=this.shadow.querySelector(".close");
+    this.iconEl=this.shadow.querySelector(".message-icon");
     this.changeTheme("error")
     this.visible=false;
-    this.articleAn=new this.anDisplay(this.article,"message-article-an","transition");
-    
+    this.articleAn=new this.anDisplay(this.article,"message-article-an","transition","flex");
+    class CloseTimeout{
+      constructor(time){
+        this.timefn=undefined;
+        this.time=time;  
+      }
+      clear(){
+        if(this.timefn){
+          clearTimeout(this.timefn);
+          this.timefn=undefined;
+        }
+      }
+      coundDown(run){
+        this.clear();
+        this.timefn=setTimeout(()=>run(),this.time);
+      }
+    }
+
+    this.closeTimeout=new CloseTimeout(1000);
+
     this.shouldRemoveClose=false;
 
     this.clearEvent=()=>{
@@ -102,6 +143,10 @@ export class MessageComponent extends HTMLElement{
     }else{
       this.article.classList.add(nowClass);
     }
+    /**
+     * icon
+     */
+    this.iconEl.src=this.iconBaseUrl+this.icons[themeType];
   }
 
   show(type,messageHTML){
@@ -111,9 +156,11 @@ export class MessageComponent extends HTMLElement{
     this.contentEl.innerHTML=messageHTML;
     this.articleAn.show();
     this.visible=true;
+    this.closeTimeout.coundDown(()=>this.hide());
   }
   hide(){
     if(!this.visible)return;
+    this.closeTimeout.clear();
     this.articleAn.hide();
     this.visible=false;
     this.clearEvent();

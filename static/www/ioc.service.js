@@ -1,7 +1,10 @@
 import {typeColors,loggerLevel} from "./resources/app.config.js";
-import {NzxAnimation,mixin_buildVariousColor,NzxDisplayAn,ConvertColor} from "./utils.js";
+import {NzxAnimation,mixin_buildVariousColor,NzxDisplayAn,ConvertColor,LoadCss} from "./utils.js";
 import {Logger} from "./common/logger.js";
 import {CommonService} from "./common/common.service.js";
+import {ajax} from "./ajax.js";
+
+window.nzxAjax=ajax;
 class IOC{
   constructor(){
     this.container=[];
@@ -30,3 +33,23 @@ ioc.bean("mixin_colors",()=>mixin_buildVariousColor);
 ioc.bean("log",()=>new Logger(loggerLevel));
 ioc.bean("convert_color",()=>new ConvertColor());
 ioc.bean("commonService",()=>new CommonService());
+
+
+/**
+ * css module
+ */
+//从module构建全局style
+const loadCss=new LoadCss();
+loadCss.load("/public/module.scss");
+const insertDom=document.createElement("aside");
+document.body.appendChild(insertDom);
+loadCss.loadModule("moduleBtn",insertDom);
+loadCss.loadModule("moduleList",insertDom);
+
+ioc.bean("loadCss",()=>loadCss);
+
+/**
+ * animation
+ * 
+ */
+window.NzxAnimation=NzxAnimation;

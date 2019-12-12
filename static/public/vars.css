@@ -1,6 +1,8 @@
 :root{
+  --font-base:lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,MicrosoftYaHei,WenQuanYi Micro Hei,sans-serif;
   --color-primary:#04A4F9;
-  --color-primary-light:#03B2FC;
+  --color-shadow:rgba(110,150,170,0.3);
+  --color-primary-light:rgb(27, 176, 240);
   --color-secondary:red;
   --color-type-info:#128AB2;
   --color-type-info-font:#5AADC9;
@@ -26,6 +28,7 @@
   --color-list-border:rgb(230,230,230);
   --color-list-content:var(--color-font-des);
   --color-list-title:var(--color-font-title);
+  --color-primarybglinear:linear-gradient(0deg,var(--color-primary),var(--color-primary-light));
   --radius-btn:10px;
   --radius-card:15px;
   --btn-color-bg:var(--color-primary);
@@ -34,4 +37,10 @@
   --btn-font-size:16px;
   --index-prop-bg:10;
   --shadow-prop: 0 2px 12px -3px rgba(0,0,0,0.8);
+
+  --icon-des:rgba(100,120,150,.6);
+  --icon-des-active:rgb(100,120,150);
+  --icon-color:rgb(110,150,170);
+
+  --header-height:60px;
 }

@@ -4,7 +4,7 @@
   font-weight: 400;
   font-display: auto;
   
-  src: url("./nzx.woff2?name=1576081941081") format("woff2"), url("./nzx.woff?name=1576081941081") format("woff"); 
+  src: url("./nzx.woff2?name=1576154001174") format("woff2"), url("./nzx.woff?name=1576154001174") format("woff"); 
 }
 
 .na {
@@ -117,27 +117,43 @@
   content: "\ea04";
 }
 
-.na-github::before {
+.na-loading::before {
   content: "\ea05";
 }
 
-.na-loading::before {
+.na-loading 2::before {
   content: "\ea06";
 }
 
-.na-upload::before {
+.na-see::before {
   content: "\ea07";
 }
 
-.na-upload-mini::before {
+.na-sho2p::before {
   content: "\ea08";
 }
 
-.na-account2::before {
+.na-shop::before {
   content: "\ea09";
 }
 
-.na-close-outline3::before {
+.na-upload::before {
   content: "\ea0a";
+}
+
+.na-upload-mini::before {
+  content: "\ea0b";
+}
+
+.na-warn::before {
+  content: "\ea0c";
+}
+
+.na-account2::before {
+  content: "\ea0d";
+}
+
+.na-close-outline3::before {
+  content: "\ea0e";
 }
 

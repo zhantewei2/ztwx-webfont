@@ -9,8 +9,11 @@ export class NzxAnimation{
     }
 
     leave(className,handleElement){
+        if(this.leaving)return;
+        this.leaving=true;
         const transitionEvent=(e)=>{
             if(e.target!==this.el)return;
+            this.leaving=false;
             this.el.removeEventListener("transitionend",transitionEvent);
             const currentElement=handleElement||this.el;
             this.el.classList.remove(className);
@@ -93,17 +96,16 @@ export class LoadCss{
         const writeStyle=()=>{
             const styleEl=document.createElement("style");
             styleEl.innerHTML=this.modules[name];
+           
             shadowEl.appendChild(styleEl)  
         }   
 
-       
         if(this.loaded)return writeStyle();
         const oldFn=this.loadFn;
         this.loadFn=()=>{
             oldFn.call(this);
             writeStyle();
         }
-       
     }
     assembleModule(content){
         let now,pre;
@@ -164,7 +166,6 @@ export class LoadCss{
             pre=now;
         }
         Object.assign(this.modules,modules);
-        console.log(modules)
         this.loaded=true;
         this.loadFn();
     }

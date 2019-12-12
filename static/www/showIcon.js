@@ -1,53 +1,38 @@
-
 import "/www/ioc.service.js";
-import "/www/store/global.store.js";
 
+import "/www/store/global.store.js";
+import "/www/components/components.js";
 
 // 注入 全局ioc容器组件
-const messageService=document.querySelector("body>ztwx-message");
-ioc.bean("messageService",()=>messageService);
+ioc.bean("messageService",()=>document.querySelector("body>ztwx-message"));
+ioc.bean("pageloadingService",()=>document.querySelector("body>ztwx-pageloading"));
 
 
 import {ajax} from "/www/ajax.js";
-import {LoadCss,NzxAnimation} from "/www/utils.js";
-import "/www/components/components.js";
 import "/www/loading.js";
-
-window.NzxAnimation=NzxAnimation;
-window.nzxAjax=ajax;
-const loadCss=new LoadCss();
-loadCss.load("/public/module.scss");
-
-window.nzxCssModule=loadCss;
 
 
 import {modal} from '/www/modal.js';
 import '/www/input.js';
 import "/www/upload.js"
 
-//从module构建全局style
-const insertDom=document.createElement("aside");
-document.body.appendChild(insertDom);
-loadCss.loadModule("moduleBtn",insertDom);
-loadCss.loadModule("moduleList",insertDom);
-
-
-
 
 class ShowIcon extends HTMLElement{
   constructor(props) {
     super(props);
     this.shadow=this.attachShadow({mode:'open'});
-    const that=this;
-    const icon=(name)=>`
-      <div class="card" data-name="${name}">
-        <div class="content">
-          <i class="fa fa-${name}"></i>
-        </div>
-        <footer>${name}</footer>
-      </div>
-    `;
+    this.iconsContainer=document.body.querySelector("#icons-container");
+    this.config={
+      prefix:""
+    };
+    this.iconObj={};
 
+
+    ioc.autoWired("pageloadingService",this);
+    ioc.autoWired("messageService",this);
+    ioc.autoWired("log",this);
+    ioc.autoWired("commonService",this);
+    
     const baseContent=``;
     this.shadow.innerHTML=`
     <style>
@@ -82,7 +67,7 @@ class ShowIcon extends HTMLElement{
         font-size:14px;
       }
       .input-top{
-        height:60px;
+        height:var(--header-height);
         padding:10px;
         box-sizing: border-box;
         padding-left:2rem;
@@ -97,6 +82,7 @@ class ShowIcon extends HTMLElement{
         width:100%;
         left:0;
       }
+
     </style>
     <div class="input-top fixer-top">
       <nzx-input placeholder="search icon"></nzx-input>
@@ -108,46 +94,10 @@ class ShowIcon extends HTMLElement{
       ${baseContent}
     </main>
     `;
-    const input=this.shadowRoot.querySelector('nzx-input');
+    this.input=this.shadowRoot.querySelector('nzx-input');
     
-    const main=this.shadowRoot.querySelector('main');
-    const orderList=(list)=>{
-      const listPre=[];
-      const listOrder=[];
-      for(let i of list){
-        i.type=="dir"?listPre.push(i):listOrder.push(i)
-      }
-      return listPre.concat(listOrder);
-    }
-    const handleList=(list)=>{
-      return list&&list.map(i=>`
-      ${i.type=="dir"?
-        `<div>
-          <label>${i.name}</label>
-          <article>${handleList(i.children).join("")}</article>
-        </div>`
-        :`<div>${i.name}</div>`
-      }`);
-    }
-    //build icons
-    ajax.send("post","/icons").then(res=>{
-      if(res.status==400)alert("图标构建失败")
-      console.log(res)
-    })
-    ajax.send("get","/icons").then(res=>{
+    this.main=this.shadowRoot.querySelector('main');
       
-      const contentHtml=handleList(orderList(JSON.parse(res.content))).join("");
-      main.innerHTML=contentHtml;
-
-    }).catch(e=>{
-      console.error(e)
-    })
-
-    this.globalOrder=window.globalStore.subscribe(payParam=>{
-      if(payParam.type=="reload font"){
-        
-      }
-    })
 
     // let prevalue;
     // input.onInput(value=>{
@@ -185,7 +135,288 @@ class ShowIcon extends HTMLElement{
     // }
 
   }
+  /**
+   * 直接构建字体
+   */
+  buildIcons(){
+     return ajax.send("post","/icons").then(res=>{
+      if(res.status==400){
+        this.messageService.show("error","图标构建失败");
+        this.log.error(res)
+      }else{
+        this.log.debug("直接构建ICON SUCCESSFUL");
+      }
+    })
+  }
+  /**
+   * 获取字体列表
+   */
+  getIcons(next){
+    return ajax.send("get","/icons").then(res=>{
+      if(res.status!=200)throw `res.status: ${res.status}`;
+      //to 处理字体列表
+      this.handleIconList(JSON.parse(res.content));
+      next&&next();
+    }).catch(e=>{
+      this.messageService.show("error","字体列表获取失败");
+      this.log.error("Font list failed to get: "+e);
+    })
+  }
+  /**
+   * 处理ICON list 信息
+   */
+  handleIconList(list){
+    /**
+     * listItem{
+     *  name:string;
+     *  children?:listItem[],
+     *  type?:"dir"
+     * }
+     *  
+     * RefObj{
+     *  default: listitem[] 
+     *  [refObj],
+     * }
+     */
+    
+    const orderList=(list,refObj)=>{
+      const listPre=[];
+      const listOrder=[];
+      let iconName;
+      let extendIndex;
+      for(let i of list){
+        if(i.type=="dir"){
+            if(!refObj[i.name])refObj[i.name]={
+              default:[]
+            }
+            orderList(i.children,refObj[i.name]);
+        }else{
+          iconName=i.name;
+          extendIndex=iconName.lastIndexOf(".svg");
+          if(extendIndex<=0)continue;
+          i.name=iconName.slice(0,extendIndex);
+          refObj["default"].push(i);
+        }
+      }
+    }
+    this.iconObj={
+      default:[]
+    }
+    orderList(list,this.iconObj);
+    
+    this.log.debug(this.iconObj); 
+    const htmlContent=this.renderRefObj(this.iconObj,"ztx-icons");
+    
 
+    // const htmlContent=handleList(list);
+    
+    this.iconsContainers.innerHTML=htmlContent;
+
+    this.iconsContainer.appendChild(this.styleContainers);
+    this.iconsContainer.appendChild(this.iconsContainers);
+    this.handleIconArticle();
+  }
+  sortRefObjKeys(refObjKeys){
+    const preArr=[];
+    const nextArr=[];
+    refObjKeys.forEach(key=>key=="default"?preArr.push(key):nextArr.push(key));
+    return preArr.concat(nextArr);
+  }
+  renderRefObj=(refObj,id)=>{
+    let articleId;
+    return this.sortRefObjKeys(Object.keys(refObj)).map(key=>{
+      articleId=id+"-"+key;
+      if(key=="default"){
+        return `
+  <div class="icon-article" id="${articleId}">
+    <label>
+        <nzx-input>
+          <img class="search-icon" src="/public/images/search.svg" slot="prefix" />
+        </nzx-input>
+    </label>
+    <artilce class="icon-article-content">
+        ${this.renderIcons(refObj[key])}
+    </article>
+  </div>
+        `
+      }else{
+        return `
+  <aside class="icon-article-children">
+      ${this.renderRefObj(refObj[key],articleId)}
+  <aside>
+        `
+      }
+    }).join("");
+  }
+  renderIcons=(iconList)=>{
+    return iconList.map(iconRef=>this.renderIcon(iconRef)).join("");
+  }
+  renderIcon=({name})=>{
+    return `
+    <div class="icon-item" data-name="${name}">
+      <div class="icon-svg"><i class="${this.config.prefix} ${this.config.prefix}-${name}"></i></div>
+      <div class="icon-content">
+        <div class="icon-content-name">${name}</div>
+      </div>
+    </div>
+    `
+  }
+
+  connectedCallback(){
+    this.styleContainers=document.createElement("style");
+    this.iconsContainers=document.createElement("article");
+    this.iconsContainers.classList.add("icons-container");
+    /**
+     * Store 订阅
+     * 
+     */
+    this.globalStoreOrder=window.globalStore.subscribe(({type,payload})=>{
+      if(type=="font reloading"){
+        if(payload){
+          //加载开始
+          this.pageloadingService.show();
+        }else if(payload===null){
+          //加载成功
+          this.pageloadingService.hide();
+          this.messageService.show("success","字体加载完成")
+          this.getIcons(()=>{
+            //高亮当前生成的icon
+            this.highlightIcon();
+          });
+        }else if(payload===false){
+          //加载失败
+          this.pageloadingService.hide();
+        }
+      }
+    })
+
+    /**
+     * 初始化图标
+     */
+    this.buildDefault();
+  }
+
+  /**
+   * 高亮刚生成的图标
+   */
+  highlightIcon(){
+    const filename=window.globalStore.select(state=>state.preFilename);
+    const justNowIconEl=this.iconsContainers.querySelector(`[data-name="password"`);
+    if(filename){
+      this.log.debug("pre filename:"+filename);
+      const justNowIconEl=this.iconsContainers.querySelector(`[data-name='${filename}']`);
+      if(justNowIconEl){
+        const bodyTop=this.commonService.getOffsetTop(justNowIconEl);
+        this.log.debug(bodyTop);
+        // justNowIconEl.scrollIntoView();
+        document.body.scrollTo({
+          top:bodyTop-100,
+          behavior:"smooth"
+        });
+        justNowIconEl.classList.add("icon-highlight");
+        setTimeout(()=>{
+          justNowIconEl.classList.remove("icon-highlight");
+        },2000)
+      }
+    }
+  }
+  initStyle(){
+    const fa=this.config.prefix;
+    const styles=``;
+    this.styleContainers.innerHTML=styles;
+    return Promise.resolve();
+  }
+  /**
+   * 默认初始化构建一次
+   */
+  buildDefault(){
+    this.pageloadingService.show();
+    this.getConfiguration()
+    .then(()=>this.initStyle())
+    .then(()=>this.buildIcons())
+    .then(()=>{
+        this.commonService.reloadPage();
+      })
+      .catch((e)=>{
+        this.log.error("初始化构建图标失败",e);
+        this.pageloadingService.hide();
+        this.messageService.show("error","初始化构建图标失败");
+      })
+  }
+
+
+  findObjListFromId(id){
+    const list=id.split("-").slice(2);
+    let objRef;
+    list.forEach((i,index)=>{
+      if(index==0){
+        objRef=this.iconObj[i];
+      }else{
+        objRef=objRef[i]
+      }
+    })
+    return objRef;
+  }
+  /**
+   * 获得webfont配置信息
+   */
+  handleIconArticle(){
+    const iconArticles=this.iconsContainers.querySelectorAll(".icon-article");
+    iconArticles.forEach(i=>{
+      const id=i.id;
+      const nzxInput=i.querySelector("nzx-input");
+      let oldArticle=i.querySelector(".icon-article-content");
+      const objList=this.findObjListFromId(id);
+      let preValue="";
+      let cacheArticle=oldArticle;
+      let oldHtml="";
+
+      nzxInput.execute=(value)=>{
+        value=value.trim();
+        if(value==preValue)return;
+        if(!value){
+          if(oldArticle!=cacheArticle){
+            i.removeChild(oldArticle);
+            i.appendChild(cacheArticle);
+            oldArticle=cacheArticle;
+          }
+        }else{
+          const article=document.createElement("article");
+          article.className="icon-article-content";
+          const resultList=this.searchIconFromList(value,objList)
+          const resultHtml=this.renderIcons(resultList);
+          if(resultHtml==oldHtml)return;
+          this.log.debug("rerender article");
+          article.innerHTML=resultHtml;
+          i.removeChild(oldArticle);
+          i.appendChild(article);
+          oldArticle=article;
+          oldHtml=resultHtml;
+        }
+        preValue=value;
+      }
+    })
+  }
+  searchIconFromList(name,list){
+    const resultList=[];
+    for(let i of list){
+      if(i.name.match(name))resultList.push(i);
+    }
+    return resultList;
+  }
+
+  getConfiguration(){
+    return ajax.send("get","base-config")
+    .then(res=>{
+      const config=JSON.parse(res.content);
+      this.log.debug("webfont config:",config);
+      this.config["prefix"]=config["fontPrefix"];
+    })
+  }
+
+  disconnectedCallback(){
+    this.globalStoreOrder.unsubscribe();
+  }
 };
 
 window.customElements.define('ztwx-showicon',ShowIcon);

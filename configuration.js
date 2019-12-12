@@ -13,11 +13,13 @@ class Configuration{
   get fontName(){
     return "nzx";
   }
+  //webfont server使用的font 文件名。不可更改
   get currentFontName(){
     return "nzx";
   }
   constructor(){
     this.formats=["woff","woff2"];
+    // 该值可传递给wefont frontend ，动态设置
     this.className="na";
     this.tmpProfileDirName=".tmp-test-icon";
  

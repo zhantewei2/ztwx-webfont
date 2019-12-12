@@ -7,6 +7,7 @@ import "/www/components/components.js";
 ioc.bean("messageService",()=>document.querySelector("body>ztwx-message"));
 ioc.bean("pageloadingService",()=>document.querySelector("body>ztwx-pageloading"));
 
+import {ModifyIcon} from "./components/modifyIcon.js";
 
 import {ajax} from "/www/ajax.js";
 import "/www/loading.js";
@@ -26,8 +27,6 @@ class ShowIcon extends HTMLElement{
       prefix:""
     };
     this.iconObj={};
-
-
     ioc.autoWired("pageloadingService",this);
     ioc.autoWired("messageService",this);
     ioc.autoWired("log",this);
@@ -81,6 +80,7 @@ class ShowIcon extends HTMLElement{
         box-shadow:0 1px 12px -3px rgba(0,0,0,0.2);
         width:100%;
         left:0;
+        z-index:10;
       }
 
     </style>
@@ -357,12 +357,15 @@ class ShowIcon extends HTMLElement{
     })
     return objRef;
   }
-  /**
-   * 获得webfont配置信息
-   */
+ /**
+  * 生成article 区域
+  */
   handleIconArticle(){
     const iconArticles=this.iconsContainers.querySelectorAll(".icon-article");
     iconArticles.forEach(i=>{
+      //初始化icon修改
+      new ModifyIcon(i);
+
       const id=i.id;
       const nzxInput=i.querySelector("nzx-input");
       let oldArticle=i.querySelector(".icon-article-content");
@@ -404,7 +407,9 @@ class ShowIcon extends HTMLElement{
     }
     return resultList;
   }
-
+ /**
+   * 获得webfont配置信息
+   */
   getConfiguration(){
     return ajax.send("get","base-config")
     .then(res=>{

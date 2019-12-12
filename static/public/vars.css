@@ -1,7 +1,7 @@
 :root{
   --font-base:lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,MicrosoftYaHei,WenQuanYi Micro Hei,sans-serif;
   --color-primary:#04A4F9;
-  --color-shadow:rgba(110,150,170,0.3);
+  --color-shadow:rgba(110,150,170,0.6);
   --color-primary-light:rgb(27, 176, 240);
   --color-secondary:red;
   --color-type-info:#128AB2;
@@ -16,7 +16,7 @@
   --color-font-title:rgb(120,160,180);
   --color-font-des:rgba(120,160,180, 0.7);
   --color-bg:white;
-  --color-lightbg: rgb(249,249,249);
+  --color-lightbg: rgb(248,248,248);
   --color-lightbg-deep: rgb(240,240,240);
   --color-softfont:rgba(0,0,0,0.7);
   --color-softbg:rgb(235,235,235);
@@ -42,5 +42,6 @@
   --icon-des-active:rgb(100,120,150);
   --icon-color:rgb(110,150,170);
 
+  --input-bg:var(--color-lightbg);
   --header-height:60px;
 }

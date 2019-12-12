@@ -8,7 +8,7 @@ export class NzxAnimation{
         this.transitionClass=transitionClass;
     }
 
-    leave(className,handleElement){
+    leave(className,handleElement,cb){
         if(this.leaving)return;
         this.leaving=true;
         const transitionEvent=(e)=>{
@@ -18,6 +18,7 @@ export class NzxAnimation{
             const currentElement=handleElement||this.el;
             this.el.classList.remove(className);
             currentElement.parentElement.removeChild(currentElement);
+            cb&&cb();
         }
         this.el.addEventListener("transitionend",transitionEvent);
         this.el.classList.add(this.transitionClass,className);

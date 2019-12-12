@@ -16,7 +16,7 @@ class nzxInput extends HTMLElement{
         .input-container{
           display:flex;
           border-radius:var(--radius-btn);
-          background:var(--color-lightbg);
+          background:var(--input-bg);
           height:45px;
           align-items:center;
           width:150px;

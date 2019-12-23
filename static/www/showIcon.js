@@ -99,41 +99,6 @@ class ShowIcon extends HTMLElement{
     this.main=this.shadowRoot.querySelector('main');
       
 
-    // let prevalue;
-    // input.onInput(value=>{
-    //   value=(value||'').trim();
-    //   if(value===prevalue)return;
-    //   prevalue=value;
-    //   if(!value)return main.innerHTML=baseContent;
-    //   const showList=listContent.filter(i=>i.match(value));
-    //   main.innerHTML=`${showList.map(i => icon(i)).join('')}`;
-    // });
-
-    // const findActive=(node,className,accent)=>{
-
-    //   if(node===accent)return null;
-    //   if(node.className===className)return node;
-    //   return findActive(node.parentNode,className,accent);
-    // };
-    // let copyBoard;
-    // main.onclick=(e)=>{
-    //   const node=findActive(e.target,'card',main);
-    //   if(!node)return;
-    //   const name=node.getAttribute('data-name');
-    //   if(!copyBoard){
-    //     copyBoard=document.createElement('input');
-    //     copyBoard.style.cssText='opacity:0;position:fixed;top:0;left:0;transform:translate(-100%,-100%)';
-    //     document.body.appendChild(copyBoard);
-    //   }
-    //   copyBoard.value=`<i class="fa fa-${name}"></i>`;
-    //   copyBoard.select();
-    //   document.execCommand('copy',null,null);
-    //   modal.open(`
-    //       <div style="">fa fa-${name}</div>
-    //       <div style="margin-top:10px;color:gray;font-size:12px;">Copy success~</div>
-    //     `);
-    // }
-
   }
   /**
    * 直接构建字体
@@ -355,6 +320,7 @@ class ShowIcon extends HTMLElement{
         objRef=objRef[i]
       }
     })
+    this.log.debug(objRef)
     return objRef;
   }
  /**
@@ -365,7 +331,7 @@ class ShowIcon extends HTMLElement{
     iconArticles.forEach(i=>{
       //初始化icon修改
       new ModifyIcon(i);
-
+      this.log.debug(i)
       const id=i.id;
       const nzxInput=i.querySelector("nzx-input");
       let oldArticle=i.querySelector(".icon-article-content");
@@ -389,7 +355,6 @@ class ShowIcon extends HTMLElement{
           const resultList=this.searchIconFromList(value,objList)
           const resultHtml=this.renderIcons(resultList);
           if(resultHtml==oldHtml)return;
-          this.log.debug("rerender article");
           article.innerHTML=resultHtml;
           i.removeChild(oldArticle);
           i.appendChild(article);

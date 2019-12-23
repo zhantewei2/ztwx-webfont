@@ -351,9 +351,12 @@ body{
 
 
 .icon-dialog-show{
-  transform: translate3d(-50%,-50%,0);
-  top:40% !important;
-  left:50% !important;
+  /* transform: translate3d(calc(-50%),-50%,0); */
+  top:calc(40% - 150px ) !important;
+  left:calc(50% - 140px ) !important;
+}
+.icon-dialog-show i{
+  font-size:30px !important;
 }
 .icon-dialog-cover{
   opacity:0.2;
@@ -411,4 +414,35 @@ body{
   border:1px solid var(--color-lightbg-deep) !important;
   color:var(--color-font-title);
   box-shadow:1px 2px 12px -6px var(--color-font-des);
+}
+
+.focus-light,.focus-deep{
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+
+}
+.focus-light::after,.focus-deep::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:1;
+  opacity:0;
+  transition:all .3s ease;
+}
+.focus-light::after{
+  background:var(--color-font);
+}
+.focus-deep:after{
+  background:var(--color-bg);
+}
+
+.focus-light:hover.focus-light::after{
+  opacity:.1;
+}
+.focus-deep:hover.focus-deep::after{
+  opacity:.4;
 }

@@ -99,18 +99,16 @@ export class ModifyIcon{
         const content=cloneNode.querySelector(".icon-content");
 
         this.editContainer.innerHTML=`
-    <div class="empty-list">
+    <div class="btn bg-outline focus-light">
         修改
-    </div>    
-    <div class="btn bg-error">
+    </div>
+    <div class="btn bg-error focus-deep">
         删除
     </div>
-    <div class="btn bg-outline">
-        关闭
-    </div>
         `;
-        console.log(this.editContainer,content);
         cloneNode.appendChild(this.editContainer);
+
+
 
         return cloneNode;
     }

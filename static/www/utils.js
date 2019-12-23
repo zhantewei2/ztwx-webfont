@@ -40,6 +40,7 @@ export class NzxDisplayAn{
         this.showCallback=null;
 
         this.el.addEventListener("transitionend",(e)=>{
+           
             if(e.target!==this.el||!(this.an_hide_running||this.an_show_running))return;
             if(this.an_hide_running){
                 this.el.style.display="none";

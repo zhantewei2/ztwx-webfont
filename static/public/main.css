@@ -355,9 +355,16 @@ body{
   top:calc(40% - 150px ) !important;
   left:calc(50% - 140px ) !important;
 }
+.icon-dialog-show .icon-svg{
+  padding: 20px 0;
+}
 .icon-dialog-show i{
   font-size:30px !important;
 }
+.icon-dialog-show .icon-content-name{
+  font-size:16px !important;
+}
+
 .icon-dialog-cover{
   opacity:0.2;
 }
@@ -390,7 +397,7 @@ body{
 .icon-edit-content{
   height:0;
   opacity:0;
-  margin-top:20px;
+  margin-top:40px;
   transition:all .2s ease;
   overflow-y:hidden
 }

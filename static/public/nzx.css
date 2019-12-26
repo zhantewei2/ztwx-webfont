@@ -4,7 +4,7 @@
   font-weight: 400;
   font-display: auto;
   
-  src: url("./nzx.woff2?name=1577117187599") format("woff2"), url("./nzx.woff?name=1577117187599") format("woff"); 
+  src: url("./nzx.woff2?name=1577356008983") format("woff2"), url("./nzx.woff?name=1577356008983") format("woff"); 
 }
 
 .na {
@@ -101,63 +101,227 @@
 }
 
 
-.na-account::before {
+.na-123::before {
   content: "\ea01";
 }
 
-.na-close::before {
+.na-account::before {
   content: "\ea02";
 }
 
-.na-close-outline::before {
+.na-activity::before {
   content: "\ea03";
 }
 
-.na-edit::before {
+.na-add::before {
   content: "\ea04";
 }
 
-.na-github::before {
+.na-agree::before {
   content: "\ea05";
 }
 
-.na-loading::before {
+.na-all-comment::before {
   content: "\ea06";
 }
 
-.na-loading 2::before {
+.na-back::before {
   content: "\ea07";
 }
 
-.na-see::before {
+.na-back_Android1::before {
   content: "\ea08";
 }
 
-.na-sho2p::before {
+.na-city2::before {
   content: "\ea09";
 }
 
-.na-shop::before {
+.na-close::before {
   content: "\ea0a";
 }
 
-.na-upload::before {
+.na-close-border::before {
   content: "\ea0b";
 }
 
-.na-upload-mini::before {
+.na-dianzan::before {
   content: "\ea0c";
 }
 
-.na-warn::before {
+.na-done2::before {
   content: "\ea0d";
 }
 
-.na-account2::before {
+.na-edit1::before {
   content: "\ea0e";
 }
 
-.na-close-outline3::before {
+.na-edit2::before {
   content: "\ea0f";
+}
+
+.na-edit3::before {
+  content: "\ea10";
+}
+
+.na-error2::before {
+  content: "\ea11";
+}
+
+.na-fatie::before {
+  content: "\ea12";
+}
+
+.na-feed::before {
+  content: "\ea13";
+}
+
+.na-female::before {
+  content: "\ea14";
+}
+
+.na-find-o::before {
+  content: "\ea15";
+}
+
+.na-gift22::before {
+  content: "\ea16";
+}
+
+.na-home::before {
+  content: "\ea17";
+}
+
+.na-i-success::before {
+  content: "\ea18";
+}
+
+.na-left::before {
+  content: "\ea19";
+}
+
+.na-loading::before {
+  content: "\ea1a";
+}
+
+.na-loadm::before {
+  content: "\ea1b";
+}
+
+.na-location::before {
+  content: "\ea1c";
+}
+
+.na-log::before {
+  content: "\ea1d";
+}
+
+.na-logo::before {
+  content: "\ea1e";
+}
+
+.na-logo.::before {
+  content: "\ea1f";
+}
+
+.na-male::before {
+  content: "\ea20";
+}
+
+.na-message2::before {
+  content: "\ea21";
+}
+
+.na-more::before {
+  content: "\ea22";
+}
+
+.na-people-o::before {
+  content: "\ea23";
+}
+
+.na-person::before {
+  content: "\ea24";
+}
+
+.na-person-o::before {
+  content: "\ea25";
+}
+
+.na-person4::before {
+  content: "\ea26";
+}
+
+.na-phone::before {
+  content: "\ea27";
+}
+
+.na-phone-1::before {
+  content: "\ea28";
+}
+
+.na-pinglun4::before {
+  content: "\ea29";
+}
+
+.na-plus::before {
+  content: "\ea2a";
+}
+
+.na-publish3::before {
+  content: "\ea2b";
+}
+
+.na-right::before {
+  content: "\ea2c";
+}
+
+.na-right-thin::before {
+  content: "\ea2d";
+}
+
+.na-search::before {
+  content: "\ea2e";
+}
+
+.na-search-key::before {
+  content: "\ea2f";
+}
+
+.na-see::before {
+  content: "\ea30";
+}
+
+.na-share2::before {
+  content: "\ea31";
+}
+
+.na-shop::before {
+  content: "\ea32";
+}
+
+.na-shop-o::before {
+  content: "\ea33";
+}
+
+.na-signature::before {
+  content: "\ea34";
+}
+
+.na-suo2::before {
+  content: "\ea35";
+}
+
+.na-upload1::before {
+  content: "\ea36";
+}
+
+.na-warn::before {
+  content: "\ea37";
+}
+
+.na-account2::before {
+  content: "\ea38";
 }
 

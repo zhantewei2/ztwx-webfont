@@ -1,4 +1,5 @@
 const http=require("http");
 
 
-http.createServer(()=>{}).listen(3000)
+res.setHeader("")
+fs.createReadStream(path).pipe(res)

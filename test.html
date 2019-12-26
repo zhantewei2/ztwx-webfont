@@ -1,0 +1,35 @@
+<html>
+
+  <script>
+    const old=HTMLElement.prototype.addEventListener;
+    const record=(e)=>{
+      console.log(e)
+    }
+    HTMLElement.prototype.addEventListener=function(method,fn){
+      old.call(this,method,function(e){
+        fn.call(this,e);
+        if(method=="click")record(e)
+      })
+    }
+
+    Object.defineProperty(HTMLElement.prototype,"onclick",{
+      set:function(fn){
+        this.addEventListener("click",fn);
+      }
+    })
+
+  </script>
+  <body>
+    
+      <div class="content" onclick="fn()" data-name="12">
+        dd
+      </div>
+  </body>
+  <script>
+    const content=document.querySelector(".content");
+    
+    content.dataset.name="1";
+    const els=document.querySelectorAll("[onclick]")
+    
+  </script>
+</html>

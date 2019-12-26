@@ -66,6 +66,24 @@
       cursor:not-allowed;
       background:var(--color-primary-disabled) !important;
     }
+
+    .btn-icon{
+      background:var(--color-lightbg);
+      border-radius:50%;
+      padding:14px;
+      transition:all .3s ease;
+    }
+    .btn-icon:hover{
+      background:var(--color-softbg);
+      cursor: pointer;
+    }
+    .btn-icon>i{
+      font-size:18px;
+    }
+    .btn-icon>img{
+      width:20px;
+      height:20px;
+    }
 }
 
 /* module card */

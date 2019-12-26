@@ -3,6 +3,7 @@
   --color-primary:#04A4F9;
   --color-shadow:rgba(110,150,170,0.6);
   --color-primary-light:rgb(27, 176, 240);
+  --color-primary-light2:rgba(4,164,249,.3);
   --color-secondary:red;
   --color-type-info:#128AB2;
   --color-type-info-font:#5AADC9;
@@ -44,4 +45,6 @@
 
   --input-bg:var(--color-lightbg);
   --header-height:60px;
+  --space-base:18px;
+  --index-decorator:150;
 }

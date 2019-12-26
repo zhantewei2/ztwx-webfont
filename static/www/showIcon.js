@@ -6,6 +6,7 @@ import "/www/components/components.js";
 // 注入 全局ioc容器组件
 ioc.bean("messageService",()=>document.querySelector("body>ztwx-message"));
 ioc.bean("pageloadingService",()=>document.querySelector("body>ztwx-pageloading"));
+ioc.bean("snackService",()=>document.querySelector("body>ztwx-snack"));
 
 import {ModifyIcon} from "./components/modifyIcon.js";
 
@@ -320,7 +321,6 @@ class ShowIcon extends HTMLElement{
         objRef=objRef[i]
       }
     })
-    this.log.debug(objRef)
     return objRef;
   }
  /**
@@ -331,7 +331,6 @@ class ShowIcon extends HTMLElement{
     iconArticles.forEach(i=>{
       //初始化icon修改
       new ModifyIcon(i);
-      this.log.debug(i)
       const id=i.id;
       const nzxInput=i.querySelector("nzx-input");
       let oldArticle=i.querySelector(".icon-article-content");

@@ -1,6 +1,7 @@
 class nzxInput extends HTMLElement{
    constructor(){
       super();
+      ioc.autoWired("utils",this);
       this.shadow=this.attachShadow({mode:'open'});
       this.shadow.innerHTML=`
       <style>
@@ -9,18 +10,21 @@ class nzxInput extends HTMLElement{
           border:none;
           min-width:250px;
           font-size:14px;
+          box-sizing:border-box;
         }
         input:focus{
           outline:none;
         }
         .input-container{
           display:flex;
+          box-sizing:border-box;
           border-radius:var(--radius-btn);
           background:var(--input-bg);
           height:45px;
           align-items:center;
           width:150px;
           transition:all .3s ease;
+          border:1px solid transparent;
         }
         input{
           padding:0 1rem;
@@ -44,13 +48,22 @@ class nzxInput extends HTMLElement{
         .__suffix input{
           padding-right:0;
         }
-        .focus{
+        .focus:not(.disableStretch){
           width:300px;
           transform:translateX(10px);
         }
-        .focus .input-prefix{
+        .focus:not(.disableStretch) .input-prefix{
           opacity:1;
           transform:scale(1.1,1.1);
+        }
+        .focus.disableStretch{
+          border:3px solid var(--color-primary-light2);
+        }
+        .disableStretch{
+          width:100%;
+        }
+        .__input-center input{
+          text-align:center;
         }
       </style>
       <div class="input-container">
@@ -62,7 +75,7 @@ class nzxInput extends HTMLElement{
       </div>
       `;
       
-      const input=this.shadowRoot.querySelector('input');
+      const input=this.inputNode=this.shadowRoot.querySelector('input');
       const throttleTime=(time,cb)=>{
         let t;
         return (e)=>{
@@ -99,9 +112,46 @@ class nzxInput extends HTMLElement{
         this.container.classList.remove("focus");
       })
 
+      input.addEventListener("input",(e)=>{
+        this.valueChangeCb&&this.valueChangeCb(e.target.value);
+      })
+      input.addEventListener("keypress",this.utils.debounceTime(
+        e=>{
+          if(e.key.toLowerCase()=="enter")this.enterCb&&this.enterCb();
+        },
+        200
+      ))
    }
    connectedCallback(){
-    
+    const disableStretch=this.getAttribute("disable-stretch")
+    if(disableStretch){
+      this.container.classList.add("disableStretch");
+    }
+    if(this.getAttribute("input-center")){
+      this.container.classList.add("__input-center")
+    }
+   }
+   blur(){
+       this.inputNode.blur();
+   }
+   focus(){
+     this.inputNode.focus();
+   }
+   set value(v){
+     this.inputNode.value=this._value=v;
+   }
+   get value(){
+     return this._value=this.inputNode.value;
+   }
+
+   valueChange(cb){
+    this.valueChangeCb=cb;
+   }
+   onEnter(cb){
+    this.enterCb=cb;
+   }
+   select(){
+     this.inputNode.select();
    }
 }
 window.customElements.define('nzx-input',nzxInput);

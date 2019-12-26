@@ -1,5 +1,5 @@
 import {typeColors,loggerLevel} from "./resources/app.config.js";
-import {NzxAnimation,mixin_buildVariousColor,NzxDisplayAn,ConvertColor,LoadCss} from "./utils.js";
+import {NzxAnimation,Utils,mixin_buildVariousColor,NzxDisplayAn,ConvertColor,LoadCss} from "./utils.js";
 import {Logger} from "./common/logger.js";
 import {CommonService} from "./common/common.service.js";
 import {ajax} from "./ajax.js";
@@ -33,7 +33,7 @@ ioc.bean("mixin_colors",()=>mixin_buildVariousColor);
 ioc.bean("log",()=>new Logger(loggerLevel));
 ioc.bean("convert_color",()=>new ConvertColor());
 ioc.bean("commonService",()=>new CommonService());
-
+ioc.bean("utils",()=>new Utils());
 
 /**
  * css module

@@ -216,13 +216,13 @@ class UploadPlate extends HTMLElement{
     <div class="flex flex-hor-center an" id="upload-wrapper">
       <div class="upload-btn">
         <main>
-          <i class="na na-upload"> </i>
+          <img src="/public/images/upload.svg" style="width:45px;height:45px;"/>
         </main>
         <input type="file"/>
         <div id="imgContainer">
           <img />
           <span>
-            <i class="na na-close"></i>
+            <img style="height:15px;width:15px;" src="/public/images/close.svg" />
           </span>
         </div>
       </div>
@@ -258,7 +258,7 @@ class UploadPlate extends HTMLElement{
         </div>
       </main>
       <button class="btn btn-round-lg">
-        <i class="na na-upload-mini"></i>
+        <img src="public/images/upload-mini.svg" style="height:25px;width:25px"/>
       </button>
     </div>
     `;

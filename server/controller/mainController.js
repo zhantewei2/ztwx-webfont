@@ -2,18 +2,22 @@ const {Router} =require('@ztwx/ztw-server');
 const {
   getIconList,
   buildIconList,
-  getBaseConfiguration
+  getBaseConfiguration,
+  deleteIcon,
+  modifyIcon
 } =require("../service/mainService");
 
 const {tryBuildFileService}=require("../service/buildService");
-
+const BaseException=require("../exceptions/BaseException");
 const {LoggerFactory} =require("../../logger");
-
+const fs=require("fs");
+const path=require("path");
 const log=LoggerFactory.getLogger(__filename);
 const urllib=require("url");
 const querystring=require("querystring");
 
 const router=new Router();
+
 
 
 router.get('icons',async(ctx)=>{
@@ -44,6 +48,7 @@ router.post("upload-icon",async(ctx)=>{
     log.debug("upload icon :"+filename);
     if(!filename)return ctx.body="0";
     const iconExists=await tryBuildFileService.findIconExists(filename);
+    //文件已存在
     if(iconExists)return ctx.body="1";
     //检查文件夹
     await tryBuildFileService.checkDir();
@@ -75,4 +80,39 @@ router.get("base-config",async(ctx)=>{
   ctx.body=await getBaseConfiguration();
 })
 
+router.put("icons",async(ctx)=>{
+  try{
+    const params=await ctx.getBodyJSON();
+    const iconExists=await tryBuildFileService.findIconExists(params.newName+".svg");
+    log.debug("icon new name: "+params.newName);
+    if(iconExists)return ctx.body="2";
+
+    await modifyIcon(
+      params.iconName,
+      params.newName,
+      params.sourcePosition.join(path.sep)
+    )
+    await buildIconList();
+    log.info(`change ${params.iconName} to ${params.newName},successfull`);
+    ctx.body="1";
+  }catch(e){
+    if (e instanceof BaseException)throw e;
+    log.error(e)
+    ctx.body="0";
+  }
+})
+
+router.post("deleteIcons",async(ctx)=>{
+  try{
+    const params=await ctx.getBodyJSON();
+    await deleteIcon(params.iconName,params.sourcePosition.join(path.sep));
+    await buildIconList();
+    log.info(`${params.iconName} , delete successfull`);
+    ctx.body="1";
+  }catch(e){
+    if(e instanceof BaseException)throw e;
+    log.error(e)
+    ctx.body="0";
+  }
+});
 module.exports=router.routes();

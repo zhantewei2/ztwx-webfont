@@ -34,7 +34,7 @@ class Ajax{
           "Content-Type":"application/json",
           ...headers
         };
-        sendQuery=params;
+        sendQuery=JSON.stringify(params);
       }
 
       xhr.open(method,address);

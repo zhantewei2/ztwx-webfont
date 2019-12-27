@@ -31,6 +31,17 @@ const cssTpDisFontCache=(cssTemplate)=>{
     return `url("${group1}?name=${timestamp}")`;
   });
 }
+const cssNativeResourceTp=(cssTp,nativeFontName)=>{
+  return cssTp.replace(/url\(["'](.+?)["']\)/g,(m,group)=>{
+    filename=group.split("?")[0];
+    filename=filename.replace(/([^\/]+)\.([^\.]+)/,(m,name,extend)=>{
+      const startName=m.indexOf(name);
+      const lenName=name.length;
+      return m.slice(0,startName)+nativeFontName+m.slice(startName+lenName)
+    })
+    return `url("${filename}?name=${new Date().getTime().toString()}")`
+  })
+}
 
 const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,nativeFontName,writeCurrent=true)=>{
   try{
@@ -53,15 +64,17 @@ const buildWebfont=async(imgDir,outDir,formats,fontName,templateClassName,native
     for (let format of formats){
       await writeFont(path.join(outDir,fontName+"."+format),result[format]);
     }
-
+    //native environment build
     if(writeCurrent){
-      await writeCss(path.join(current_resources,nativeFontName+".css"),cssTp);
+      const nativeCssTp=cssNativeResourceTp(cssTp,nativeFontName);
+      await writeCss(path.join(current_resources,nativeFontName+".css"),nativeCssTp);
       for(let format of formats){
         await writeFont(path.join(current_resources,nativeFontName+"."+format),result[format]);
       }
     }
     log.info("build webfont successful")
   }catch(e){
+    if (e.toString().indexOf("not match any files")>=0) return true;
     log.error(e);
     throw e;
   }

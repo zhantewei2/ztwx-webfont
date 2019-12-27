@@ -1,15 +1,15 @@
 @font-face {
-  font-family: "nzx";
+  font-family: "cmNzx";
   font-style: normal;
   font-weight: 400;
   font-display: auto;
   
-  src: url("./nzx.woff2?name=1577095115792") format("woff2"), url("./nzx.woff?name=1577095115792") format("woff"); 
+  src: url("./nzx.woff2?name=1577437466134") format("woff2"), url("./nzx.woff?name=1577437466134") format("woff"); 
 }
 
-.na {
+.fa {
   display: inline-block;
-  font-family: "nzx";
+  font-family: "cmNzx";
   font-weight: 400;
   font-style: normal;
   font-variant: normal;
@@ -19,145 +19,337 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.na-lg {
+.fa-lg {
   font-size: 1.33333em;
   line-height: 0.75em;
   vertical-align: -0.0667em;
 }
 
-.na-xs {
+.fa-xs {
   font-size: 0.75em;
 }
 
-.na-sm {
+.fa-sm {
   font-size: 0.875em;
 }
 
-.na-1x {
+.fa-1x {
   font-size: 1em;
 }
 
-.na-2x {
+.fa-2x {
   font-size: 2em;
 }
 
-.na-3x {
+.fa-3x {
   font-size: 3em;
 }
 
-.na-4x {
+.fa-4x {
   font-size: 4em;
 }
 
-.na-5x {
+.fa-5x {
   font-size: 5em;
 }
 
-.na-6x {
+.fa-6x {
   font-size: 6em;
 }
 
-.na-7x {
+.fa-7x {
   font-size: 7em;
 }
 
-.na-8x {
+.fa-8x {
   font-size: 8em;
 }
 
-.na-9x {
+.fa-9x {
   font-size: 9em;
 }
 
-.na-10x {
+.fa-10x {
   font-size: 10em;
 }
 
-.na-fw {
+.fa-fw {
   text-align: center;
   width: 1.25em;
 }
 
-.na-border {
+.fa-border {
   border: solid 0.08em #eee;
   border-radius: 0.1em;
   padding: 0.2em 0.25em 0.15em;
 }
 
-.na-pull-left {
+.fa-pull-left {
   float: left;
 }
 
-.na-pull-right {
+.fa-pull-right {
   float: right;
 }
 
-.na.na-pull-left {
+.fa.fa-pull-left {
   margin-right: 0.3em;
 }
 
-.na.na-pull-right {
+.fa.fa-pull-right {
   margin-left: 0.3em;
 }
 
 
-.na-account::before {
+.fa-activity::before {
   content: "\ea01";
 }
 
-.na-close::before {
+.fa-activity2::before {
   content: "\ea02";
 }
 
-.na-close-outline::before {
+.fa-add::before {
   content: "\ea03";
 }
 
-.na-edit::before {
+.fa-agree::before {
   content: "\ea04";
 }
 
-.na-github::before {
+.fa-all-comment::before {
   content: "\ea05";
 }
 
-.na-loading::before {
+.fa-back::before {
   content: "\ea06";
 }
 
-.na-loading 2::before {
+.fa-back2::before {
   content: "\ea07";
 }
 
-.na-see::before {
+.fa-back_Android::before {
   content: "\ea08";
 }
 
-.na-sho2p::before {
+.fa-camera::before {
   content: "\ea09";
 }
 
-.na-shop::before {
+.fa-car::before {
   content: "\ea0a";
 }
 
-.na-upload::before {
+.fa-car-o::before {
   content: "\ea0b";
 }
 
-.na-upload-mini::before {
+.fa-city::before {
   content: "\ea0c";
 }
 
-.na-warn::before {
+.fa-city2::before {
   content: "\ea0d";
 }
 
-.na-account2::before {
+.fa-close::before {
   content: "\ea0e";
 }
 
-.na-close-outline3::before {
+.fa-close-border::before {
   content: "\ea0f";
+}
+
+.fa-comment::before {
+  content: "\ea10";
+}
+
+.fa-connect::before {
+  content: "\ea11";
+}
+
+.fa-dianzan::before {
+  content: "\ea12";
+}
+
+.fa-done::before {
+  content: "\ea13";
+}
+
+.fa-edit::before {
+  content: "\ea14";
+}
+
+.fa-edit1::before {
+  content: "\ea15";
+}
+
+.fa-edit2::before {
+  content: "\ea16";
+}
+
+.fa-edit3::before {
+  content: "\ea17";
+}
+
+.fa-error2::before {
+  content: "\ea18";
+}
+
+.fa-evalute::before {
+  content: "\ea19";
+}
+
+.fa-fatie::before {
+  content: "\ea1a";
+}
+
+.fa-feed::before {
+  content: "\ea1b";
+}
+
+.fa-female::before {
+  content: "\ea1c";
+}
+
+.fa-find::before {
+  content: "\ea1d";
+}
+
+.fa-find-o::before {
+  content: "\ea1e";
+}
+
+.fa-gift::before {
+  content: "\ea1f";
+}
+
+.fa-head::before {
+  content: "\ea20";
+}
+
+.fa-home::before {
+  content: "\ea21";
+}
+
+.fa-i-success::before {
+  content: "\ea22";
+}
+
+.fa-left::before {
+  content: "\ea23";
+}
+
+.fa-loading::before {
+  content: "\ea24";
+}
+
+.fa-loadm::before {
+  content: "\ea25";
+}
+
+.fa-location::before {
+  content: "\ea26";
+}
+
+.fa-logo::before {
+  content: "\ea27";
+}
+
+.fa-male::before {
+  content: "\ea28";
+}
+
+.fa-message2::before {
+  content: "\ea29";
+}
+
+.fa-more::before {
+  content: "\ea2a";
+}
+
+.fa-people::before {
+  content: "\ea2b";
+}
+
+.fa-people-o::before {
+  content: "\ea2c";
+}
+
+.fa-person::before {
+  content: "\ea2d";
+}
+
+.fa-person-o::before {
+  content: "\ea2e";
+}
+
+.fa-phone::before {
+  content: "\ea2f";
+}
+
+.fa-phone-1::before {
+  content: "\ea30";
+}
+
+.fa-pinglun::before {
+  content: "\ea31";
+}
+
+.fa-plus::before {
+  content: "\ea32";
+}
+
+.fa-publish::before {
+  content: "\ea33";
+}
+
+.fa-right::before {
+  content: "\ea34";
+}
+
+.fa-search::before {
+  content: "\ea35";
+}
+
+.fa-search-key::before {
+  content: "\ea36";
+}
+
+.fa-see::before {
+  content: "\ea37";
+}
+
+.fa-setting::before {
+  content: "\ea38";
+}
+
+.fa-share2::before {
+  content: "\ea39";
+}
+
+.fa-shop::before {
+  content: "\ea3a";
+}
+
+.fa-shop-o::before {
+  content: "\ea3b";
+}
+
+.fa-signature::before {
+  content: "\ea3c";
+}
+
+.fa-suo::before {
+  content: "\ea3d";
+}
+
+.fa-trash::before {
+  content: "\ea3e";
+}
+
+.fa-warn::before {
+  content: "\ea3f";
 }
 

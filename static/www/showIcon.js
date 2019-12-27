@@ -6,6 +6,7 @@ import "/www/components/components.js";
 // 注入 全局ioc容器组件
 ioc.bean("messageService",()=>document.querySelector("body>ztwx-message"));
 ioc.bean("pageloadingService",()=>document.querySelector("body>ztwx-pageloading"));
+ioc.bean("snackService",()=>document.querySelector("body>ztwx-snack"));
 
 import {ModifyIcon} from "./components/modifyIcon.js";
 
@@ -23,6 +24,7 @@ class ShowIcon extends HTMLElement{
     super(props);
     this.shadow=this.attachShadow({mode:'open'});
     this.iconsContainer=document.body.querySelector("#icons-container");
+    this.buildContainerBg();
     this.config={
       prefix:""
     };
@@ -88,8 +90,7 @@ class ShowIcon extends HTMLElement{
       <nzx-input placeholder="search icon"></nzx-input>
       <nzx-upload></nzx-upload>
     </div>
-    <div class="input-top">
-    </div>
+    <div class="input-top"></div>
     <main>
       ${baseContent}
     </main>
@@ -128,6 +129,16 @@ class ShowIcon extends HTMLElement{
     })
   }
   /**
+   * 创建 iconsContainers 背景
+   */
+  buildContainerBg(){
+    
+    // const bgImg=document.createElement("img");
+    // bgImg.className="bg-img";
+    // bgImg.src="/public/bg/bg.svg";
+    // this.iconsContainer.appendChild(bgImg);
+  }
+  /**
    * 处理ICON list 信息
    */
   handleIconList(list){
@@ -143,7 +154,16 @@ class ShowIcon extends HTMLElement{
      *  [refObj],
      * }
      */
+    this.iconsContainer.appendChild(this.styleContainers);
+    if(!list || !list.length){
+      this.iconsContainers.innerHTML=`
+<div>
     
+</div>
+    
+    `
+      return;
+    }
     const orderList=(list,refObj)=>{
       const listPre=[];
       const listOrder=[];
@@ -177,7 +197,7 @@ class ShowIcon extends HTMLElement{
     
     this.iconsContainers.innerHTML=htmlContent;
 
-    this.iconsContainer.appendChild(this.styleContainers);
+    
     this.iconsContainer.appendChild(this.iconsContainers);
     this.handleIconArticle();
   }
@@ -320,7 +340,6 @@ class ShowIcon extends HTMLElement{
         objRef=objRef[i]
       }
     })
-    this.log.debug(objRef)
     return objRef;
   }
  /**
@@ -331,7 +350,6 @@ class ShowIcon extends HTMLElement{
     iconArticles.forEach(i=>{
       //初始化icon修改
       new ModifyIcon(i);
-      this.log.debug(i)
       const id=i.id;
       const nzxInput=i.querySelector("nzx-input");
       let oldArticle=i.querySelector(".icon-article-content");
@@ -381,6 +399,15 @@ class ShowIcon extends HTMLElement{
       const config=JSON.parse(res.content);
       this.log.debug("webfont config:",config);
       this.config["prefix"]=config["fontPrefix"];
+      //提交信息配置
+      window.globalStore.commit("load config end",state=>{
+        return {
+          ...state,
+          config:{
+            ...config
+          }
+        }
+      })
     })
   }
 

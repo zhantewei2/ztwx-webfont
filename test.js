@@ -1,4 +1,6 @@
-const http=require("http");
+const path=require("path");
+const fs=require("fs");
 
+p=path.join(process.cwd(),"static/ztw/ztw2");
 
-http.createServer(()=>{}).listen(3000)
+fs.mkdirSync(p,{recursive:true})

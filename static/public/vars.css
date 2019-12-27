@@ -3,6 +3,7 @@
   --color-primary:#04A4F9;
   --color-shadow:rgba(110,150,170,0.6);
   --color-primary-light:rgb(27, 176, 240);
+  --color-primary-light2:rgba(4,164,249,.3);
   --color-secondary:red;
   --color-type-info:#128AB2;
   --color-type-info-font:#5AADC9;
@@ -13,11 +14,9 @@
   --color-type-success:#06D6A0;
   --color-type-success-font:#119278;
   --color-font:rgba(0,0,0,0.75);
-  --color-font-hover:rgba(0,0,0,.1);
   --color-font-title:rgb(120,160,180);
   --color-font-des:rgba(120,160,180, 0.7);
   --color-bg:white;
-  --color-bg-hover:rgba(255,255,255,.1);
   --color-lightbg: rgb(248,248,248);
   --color-lightbg-deep: rgb(240,240,240);
   --color-softfont:rgba(0,0,0,0.7);
@@ -30,7 +29,8 @@
   --color-list-border:rgb(230,230,230);
   --color-list-content:var(--color-font-des);
   --color-list-title:var(--color-font-title);
-  --color-primarybglinear:linear-gradient(0deg,var(--color-primary),var(--color-primary-light));
+  /* --color-primarybglinear:linear-gradient(0deg,var(--color-primary),var(--color-primary-light)); */
+  --color-primarybglinear:black;
   --radius-btn:10px;
   --radius-card:15px;
   --btn-color-bg:var(--color-primary);
@@ -40,10 +40,14 @@
   --index-prop-bg:10;
   --shadow-prop: 0 2px 12px -3px rgba(0,0,0,0.8);
 
+  --icon-main-color:black;
+  --icon-main-des:rgba(0,0,0,0.75);
   --icon-des:rgba(100,120,150,.6);
   --icon-des-active:rgb(100,120,150);
   --icon-color:rgb(110,150,170);
-
+  --icon-card-hover:rgba(0,0,0,0.05);
   --input-bg:var(--color-lightbg);
   --header-height:60px;
+  --space-base:18px;
+  --index-decorator:150;
 }

@@ -105,7 +105,7 @@ export class MessageComponent extends HTMLElement{
       }
     }
 
-    this.closeTimeout=new CloseTimeout(1000);
+    this.closeTimeout=new CloseTimeout(1500);
 
     this.shouldRemoveClose=false;
 

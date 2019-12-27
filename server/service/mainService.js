@@ -3,7 +3,11 @@ const {run_promise}=require("../../tool");
 const fs=require("fs");
 const path=require("path");
 const {buildWebfont}=require("../../webfont/build-webfont");
+const {FileNotFoundException} =require("../exceptions/CustomExceptions");
+const {LoggerFactory} =require("../../logger");
 
+
+const log=LoggerFactory.getLogger(__filename);
 const _getIconList=async(list,dir_path,rel_path)=>{
   const host_dir=await run_promise(
     fs.readdir,
@@ -24,7 +28,7 @@ const _getIconList=async(list,dir_path,rel_path)=>{
       list.push({
         // type:"file",
         // relpath:rel_path,
-        name:file_name
+        name:file_name,
       })
     }
   }
@@ -59,18 +63,48 @@ const buildIconList=async()=>{
 const getBaseConfiguration=async=()=>{
   return {
     fontPrefix:configuration.className,
+    ...configuration.sbinConf
   }
 }
 
 
 
 /**
- * upload icon
+ * delete icon
  * 
  * 
 */
-
-
+const deleteIcon=async(iconName,iconDir)=>{
+  const fullPath=path.join(path.join(configuration.imgDir,iconDir),iconName+".svg");
+  try {
+      log.debug("delete img:"+fullPath);
+      await run_promise(
+          fs.unlink,
+          fullPath
+      );
+  }catch(e){
+      throw new FileNotFoundException();
+  }
+}
+/**修改图标名
+ * 
+ * @param {*} iconName 
+ * @param {新名} newName 
+ * @param {*} iconDir 
+ */
+const modifyIcon=async(iconName,newName,iconDir)=>{
+  try{
+    const fullOldPath=path.join(configuration.imgDir,iconDir,iconName+".svg");
+    const fullNewPath=path.join(configuration.imgDir,iconDir,newName+".svg");
+    await run_promise(
+      fs.rename,
+      fullOldPath,
+      fullNewPath
+    )
+  }catch(e){
+    throw new FileNotFoundException(e);
+  }
+}
 
 /**
  * icon has exists 
@@ -87,7 +121,8 @@ const iconExists=async(iconName)=>{
 */
 
 
-
+exports.deleteIcon=deleteIcon;
 exports.buildIconList=buildIconList;
 exports.getIconList=getIconList;
 exports.getBaseConfiguration=getBaseConfiguration;
+exports.modifyIcon=modifyIcon;

@@ -1,8 +1,16 @@
 class Subject{
   /**
    * 
+   * ConfigMessage{
+   *    author:string;
+   *    email:string;
+   *    github:string;
+   * }
+   * 
+   * 
    * state{
    *   preFilename:string;
+   *   config:ConfigMessage
    * }
    * 
    */

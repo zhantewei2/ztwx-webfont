@@ -26,7 +26,9 @@ export class NzxAnimation{
 }
 
 export class NzxDisplayAn{
-    constructor(element,animationCssName,transitionClass,displayName="block"){
+    
+    constructor(element,animationCssName,transitionClass,displayName="block",shortTime=100){
+        this.shortTime=shortTime;
         this.transition=transitionClass;
         this.el=element;
         this.show_start=animationCssName+"-show-start";
@@ -39,7 +41,7 @@ export class NzxDisplayAn{
         this.hideCallback=null;
         this.showCallback=null;
 
-        this.el.addEventListener("transitionend",(e)=>{
+        const end=(e)=>{
             if(e.target!==this.el||!(this.an_hide_running||this.an_show_running))return;
             if(this.an_hide_running){
                 this.el.style.display="none";
@@ -47,8 +49,14 @@ export class NzxDisplayAn{
             }else if(this.an_show_running){
                 if(this.showCallback)this.showCallback();
             }
-
             this.clearBefore();
+        }
+
+        this.el.addEventListener("transitionend",(e)=>{
+            end(e);
+        })
+        this.el.addEventListener("transitioncancel",e=>{
+            end(e);
         })
         
     }
@@ -57,20 +65,39 @@ export class NzxDisplayAn{
         this.el.classList.remove(this.show_start,this.hide_end,this.transition);
     }
     show(cb=null){
+        //throttle short hide 
+        if(this.shortHideWaiting)return;
+
         this.clearBefore();
         this.el.classList.add(this.show_start,this.transition);
         this.el.style.display=this.displayName;
         this.an_show_running=true;
         setTimeout(()=>{
             this.el.classList.remove(this.show_start);
-        },10);
+        },50);
         this.showCallback=cb;
+        this.shortHideWaiting=true;
+        this.shortHideFn=null;
+
+        this.shortHideTimer=setTimeout(()=>{
+            this.shortHideWaiting=false;
+            this.shortHideFn&&this.shortHideFn();
+            this.shortHideTimer=null;
+        },this.shortTime)
     }
     hide(cb=null){
-        this.clearBefore();
-        this.el.classList.add(this.hide_end,this.transition);
-        this.an_hide_running=true;
-        this.hideCallback=cb;
+        const end=()=>{
+            this.clearBefore();
+            this.el.classList.add(this.hide_end,this.transition);
+            this.an_hide_running=true;
+            this.hideCallback=cb;    
+        }
+        if(this.shortHideWaiting){
+            this.shortHideFn=()=>end();
+        }else{
+            end();
+        }
+
     }
 }
 
@@ -209,5 +236,99 @@ export class ConvertColor{
     opacity(color,percent){
         const rgb=this.getColorValue(color);
         return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${percent})`;
+    }
+}
+
+export class RelativeFixed{
+    constructor(space=10){
+        this.space=space;
+    }
+    relativePosition(targetEl,relativeEl,position="top"){
+        const rect=relativeEl.getBoundingClientRect();
+        const obj={
+            rect,
+            centerX:rect.left+rect.width/2,
+            centerY:rect.top+rect.height/2,
+            winH:document.documentElement.offsetHeight,
+            winW:document.documentElement.offsetWidth,
+            target:targetEl
+        }
+        setTimeout(()=>{
+            const positionDict=this.switchPosition(position,obj);
+            let value;
+            for (let i in positionDict){
+                value=positionDict[i];
+                if(value!==undefined){
+                    targetEl.style[i]=value+"px";
+                }
+            }
+        },1)
+       
+    }
+    /**
+     * 
+     * @param {"top"|"left"|"right"|"bottom"} position 
+     */
+    switchPosition(position,obj,history=[]){
+        let top,left;
+        const targetH=obj.target.offsetHeight;
+        const targetW=obj.target.offsetWidth;
+        if(position=="top"){
+            top=obj.rect.top-this.space-targetH;
+            left=obj.centerX-targetW/2;
+        }else if(position=="left"){
+            left=obj.rect.left-this.space-targetW;
+            top=obj.centerY-targetH/2;
+
+        }else if(position=="right"){
+            left=obj.rect.right+this.space;
+            top=obj.centerY+targetH/2;
+        }else if(position=="bottom"){
+            top=obj.rect.bottom+this.space;
+            left=obj.centerX-targetW/2;
+        }
+        if (top!==undefined&&top<0&& !history.includes("top")){
+            history.push("top");
+            return this.switchPosition("bottom",obj,history);
+        }
+        if (left!==undefined&&left<0&& !history.includes("left")){
+            history.push("left");
+            return this.switchPosition("right",obj,history);
+        }
+        if (left!==undefined&&left+this.space+targetW>obj.winW&& !history.includes("right")){
+            history.push("right");
+            return this.switchPosition("left",obj,history);
+        }
+        if (top!==undefined&&top+this.space+targetH>obj.winH&& !history.includes("bottom")){
+            history.push("bottom");
+            return this.switchPosition("top",obj,history);
+        }
+        return {
+            top,left
+        }
+    }
+
+}
+
+
+export const DebounceTime=(run,time=100)=>{
+    let s;
+    return e=>{
+        if(s){
+            clearTimeout(s);
+            s=null;
+        }
+        s=setTimeout(()=>{
+            run.call(e.currentTarget,e);
+        },time)
+    }
+}
+
+export class Utils{
+    constructor(){
+        this.relativeFixed=new RelativeFixed();
+        this.defineFixedPosition=(...args)=>
+            this.relativeFixed.relativePosition(...args);
+        this.debounceTime=DebounceTime;
     }
 }

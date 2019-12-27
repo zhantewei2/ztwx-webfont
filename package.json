@@ -4,14 +4,22 @@
   "description": "webfont",
   "main": "config.js",
   "scripts": {
-    "test": "node server/app.js"
+    "test": "node server/app.js 3000"
+  },
+  "bin": {
+    "cmWebfont": "./server/webfont-bin.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@ztwx/ztw-server": "^0.0.4",
+    "commander": "^4.0.1",
     "open": "^7.0.0",
     "webfont": "^9.0.0",
     "winston": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhantewei2/ztwx-webfont"
   }
 }

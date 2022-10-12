@@ -15,7 +15,7 @@
     "@ztwx/ztw-server": "^0.0.4",
     "commander": "^4.0.1",
     "open": "^7.0.0",
-    "webfont": "^9.0.0",
+    "webfont": "^11.2.26",
     "winston": "^3.2.1"
   },
   "repository": {
